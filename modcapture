@@ -1,0 +1,16 @@
+#!/bin/sh
+
+MOUNT_PATH=`cat /etc/mtab | grep "/dev/sr0" | awk '{print $2}'`
+FILES=`ls $MOUNT_PATH/*.mod`
+
+echo $FILES;
+
+COUNT=0
+for FILE in $FILES
+do
+	COUNT=`expr $COUNT + 1`
+	./convert $FILE $1-$COUNT.mp4
+done
+
+mplayer -quiet fanfare.wav >/dev/null 2>&1
+echo "Operation complete."

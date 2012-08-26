@@ -1,0 +1,16 @@
+#!/bin/sh
+
+TITLES=`lsdvd -Ox 2>/dev/null | grep "<ix>"`
+TITLES=`echo $TITLES | sed -r 's/<\/?ix>//g'`
+
+echo $TITLES
+
+for TITLE in $TITLES
+do
+	mplayer dvd://$TITLE -dumpstream -dumpfile $1-$TITLE.vob >/dev/null 2>&1
+	./convert $1-$TITLE.vob $1-$TITLE.mp4
+	mv $1-$TITLE.vob old_vobs/$1-$TITLE.vob
+done
+
+mplayer -quiet fanfare.wav >/dev/null 2>&1
+echo "Operation complete."

@@ -1,0 +1,8 @@
+#!/bin/sh
+
+ffmpeg \
+-i $1 \
+-vcodec libx264 -vpre fast -vf yadif,scale=854:480 -r 24 -b 128K \
+-acodec libfaac -ar 44100 -ab 64K \
+-threads 0 \
+$2
